@@ -26,9 +26,13 @@ class MatchScreen extends React.Component {
       leftSideScore: 0,
       leftTotalScore: 0,
       rightSideScore: 0,
+      rightMountScore: 0,
+      rightBackScore: 0,
       rightTotalScore: 0,
       scoringMode: "waiting",
-      centralButton: "Start"
+      centralButton: "Start",
+      centralButtonIcon: "play",
+      matchResult: 'DRAW'
     };
   }
 
@@ -48,7 +52,7 @@ class MatchScreen extends React.Component {
   startTestMatch = () => {
     if (this.state.screenMode == "preselect") {
       this.setState({ screenMode: "active" });
-      this.setState({ timeRemaining: 40 });
+      this.setState({ timeRemaining: 4 });
       console.log("selected test match...");
     } else {
       this.setState({ screenMode: "preselect" });
@@ -59,23 +63,37 @@ class MatchScreen extends React.Component {
     switch (this.state.screenMode) {
       case "active":
         this.setState({ screenMode: "inprogress" });
-        this.setState({ centralButton: "Pause" });
+        this.setState({ centralButton: "Pause", centralButtonIcon: 'pause' });
         break;
 
       case "inprogress":
         this.setState({ screenMode: "paused" });
-        this.setState({ centralButton: "Resume" });
+        this.setState({ centralButton: "Resume", centralButtonIcon: 'play' });
         break;
 
       case "paused":
         this.setState({ screenMode: "inprogress" });
-        this.setState({ centralButton: "Pause" });
+        this.setState({ centralButton: "Pause", centralButtonIcon: 'pause' });
         break;
 
       case "matchended":
-        this.setState({ screenMode: "preselect" });
-        this.setState({ centralButton: "Start" });
-        this.setState({ timeRemaining: 111 });
+       
+        this.setState({
+          screenMode: "preselect",
+          timeRemaining: 111,
+          leftMountScore: 0,
+          leftBackScore: 0,
+          leftSideScore: 0,
+          leftTotalScore: 0,
+          rightSideScore: 0,
+          rightMountScore: 0,
+          rightBackScore: 0,
+          rightTotalScore: 0,
+          scoringMode: "waiting",
+          centralButton: "Start",
+          centralButtonIcon:"play",
+          matchResult: 'DRAW'
+        })
     }
 
     // Start the timer - will need to change parent timeRemaining state
@@ -87,16 +105,23 @@ class MatchScreen extends React.Component {
     if (this.state.timeRemaining < 1) {
       console.log("Match is over!");
       this.setState({ screenMode: "matchended" });
-      this.setState({ centralButton: "Reset" });
+      this.setState({ centralButton: "Reset", centralButtonIcon: 'refresh' });
+
+      if(this.state.rightTotalScore > this.state.leftTotalScore){
+
+        this.setState({matchResult: 'RED WINS'})
+      } else if(this.state.rightTotalScore < this.state.leftTotalScore){
+
+        this.setState({matchResult: 'BLUE WINS'})
     }
-  };
+  }};
 
   tick = () => {
     console.log("tick invoked");
     if (this.state.screenMode == "inprogress") {
       console.log("match in progress");
       
-
+      // count the scores
       switch(this.state.scoringMode) {
 
         case 'left side':
@@ -105,45 +130,97 @@ class MatchScreen extends React.Component {
         case 'right side':
           this.setState({rightSideScore : this.state.rightSideScore + 1})
           break;
+        case 'left mount':
+          this.setState({leftMountScore : this.state.leftMountScore + 1})
+          break;
+          case 'right mount':
+          this.setState({rightMountScore : this.state.rightMountScore + 1})
+          break;
+        case 'left back':
+          this.setState({leftBackScore : this.state.leftBackScore + 1})
+          break;
+        case 'right back':
+          this.setState({rightBackScore : this.state.rightBackScore + 1})
+          break;
 
       }
-
+        // add the scores to display total
       this.setState({
         timeRemaining: this.state.timeRemaining - 1,
 
         leftTotalScore:
           this.state.leftMountScore +
           this.state.leftBackScore +
-          this.state.leftSideScore
+          this.state.leftSideScore,
+
+        rightTotalScore:
+          this.state.rightMountScore +
+          this.state.rightBackScore +
+          this.state.rightSideScore
+
+
       });
     }
   };
 
-  scoreLeftMount = () => {
-    this.setState({ leftMountScore: this.state.leftMountScore + 1 });
-    console.log("scoring left mount");
-  };
-
   scoreLeftSide = () => {
+    if(this.state.screenMode == 'inprogress'){
     if (this.state.scoringMode == "waiting") {
       this.setState({ scoringMode: "left side" });
     } else if (this.state.scoringMode == "left side") {
       this.setState({ scoringMode: "waiting" });
     }
-  };
+  }};
+  scoreLeftMount = () => {
+    if(this.state.screenMode == 'inprogress'){
+
+    if (this.state.scoringMode == "waiting") {
+      this.setState({ scoringMode: "left mount" });
+    } else if (this.state.scoringMode == "left mount") {
+      this.setState({ scoringMode: "waiting" });
+    }
+  }};
+  scoreLeftBack = () => {
+    if(this.state.screenMode == 'inprogress'){
+
+    if (this.state.scoringMode == "waiting") {
+      this.setState({ scoringMode: "left back" });
+    } else if (this.state.scoringMode == "left back") {
+      this.setState({ scoringMode: "waiting" });
+    }
+  }};
+
 
   scoreRightSide = () => {
+    if(this.state.screenMode == 'inprogress'){
+
     if (this.state.scoringMode == "waiting") {
       this.setState({ scoringMode: "right side" });
     } else if (this.state.scoringMode == "right side") {
       this.setState({ scoringMode: "waiting" });
     }
-  };
+  }};
 
-  scoreLeftBack = () => {
-    this.setState({ leftBackScore: this.state.leftBackScore + 1 });
-    console.log("scoring left back");
-  };
+  scoreRightMount = () => {
+    if(this.state.screenMode == 'inprogress'){
+
+    if (this.state.scoringMode == "waiting") {
+      this.setState({ scoringMode: "right mount" });
+    } else if (this.state.scoringMode == "right mount") {
+      this.setState({ scoringMode: "waiting" });
+    }
+  }};
+  scoreRightBack = () => {
+    if(this.state.screenMode == 'inprogress'){
+
+    if (this.state.scoringMode == "waiting") {
+      this.setState({ scoringMode: "right back" });
+    } else if (this.state.scoringMode == "right back") {
+      this.setState({ scoringMode: "waiting" });
+    }
+  }};
+
+ 
 
   render() {
     return (
@@ -174,6 +251,8 @@ class MatchScreen extends React.Component {
           tick={this.tick}
           endMatch={this.endMatch}
           centralButton={this.state.centralButton}
+          centralButtonIcon={this.state.centralButtonIcon}
+          matchResult={this.state.matchResult}
         />
 
         <Scores
@@ -181,11 +260,11 @@ class MatchScreen extends React.Component {
           side='right'
           buttonColor="red"
           screenMode={this.state.screenMode}
-          mountScore={this.state.leftMountScore}
-          backScore={this.state.leftBackScore}
+          mountScore={this.state.rightMountScore}
+          backScore={this.state.rightBackScore}
           sideScore={this.state.rightSideScore}
-          scoreMount={this.scoreLeftMount}
-          scoreBack={this.scoreLeftBack}
+          scoreMount={this.scoreRightMount}
+          scoreBack={this.scoreRightBack}
           scoreSide={this.scoreRightSide}
           totalScore={this.state.rightTotalScore}
           scoringMode={this.state.scoringMode}
@@ -258,8 +337,10 @@ class MainTimerArea extends Component {
             <MatchTimer
               timeRemaining={timeRemaining}
               centralButton={this.props.centralButton}
+              centralButtonIcon={this.props.centralButtonIcon}
               screenMode={this.props.screenMode}
               startTimer={this.props.startTimer}
+              matchResult={this.props.matchResult}
             />
           </div>
         </div>
@@ -288,14 +369,40 @@ function Preselect(props) {
 }
 
 function MatchTimer(props) {
+
+if(props.screenMode == 'matchended') {
+
+  return (
+    <div>
+    <div>THE MATCH IS OVER!!</div>
+    <div>{props.timeRemaining}</div>
+    <Button 
+    onClick={props.startTimer}
+    content= {props.centralButton}
+    icon={props.centralButtonIcon}
+    />
+
+    <div>The result is {props.matchResult}</div>
+    
+    </div>
+  )
+
+} else {
+
+
   return (
     <div>
       <div>STATUS: {props.screenMode}</div>
       <div>{props.timeRemaining}</div>
-      <button onClick={props.startTimer}>{props.centralButton}</button>
+      <Button 
+    onClick={props.startTimer}
+    content= {props.centralButton}
+    icon={props.centralButtonIcon}
+    />
     </div>
   );
 }
+} 
 
 class Scores extends Component {
   constructor(props) {
@@ -322,7 +429,8 @@ class Scores extends Component {
       scoreBack,
       totalScore,
       scoringMode,
-      side
+      side,
+      screenMode
     } = this.props;
 
     let buttonStateSide = "ui basic button";
@@ -332,6 +440,7 @@ class Scores extends Component {
    
 
     // set the button states
+
 
     if (scoringMode == `${side} side`) {
       buttonStateSide = "ui active button";
@@ -350,6 +459,7 @@ class Scores extends Component {
       buttonStateMount = "ui basic button";
       buttonStateBack = "ui basic button";
     }
+    
 
 
 
@@ -378,7 +488,7 @@ class Scores extends Component {
         <div>{backScore}</div>
         <Button
           content="Score Back"
-          onClick={scoreMount}
+          onClick={scoreBack}
           color={buttonColor}
           className={buttonStateBack}
         />
