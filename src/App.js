@@ -25,6 +25,9 @@ class MatchScreen extends React.Component {
       leftBackScore: 0,
       leftSideScore: 0,
       leftTotalScore: 0,
+      rightSideScore: 0,
+      rightTotalScore: 0,
+      scoringMode: "waiting",
       centralButton: "Start"
     };
   }
@@ -45,7 +48,7 @@ class MatchScreen extends React.Component {
   startTestMatch = () => {
     if (this.state.screenMode == "preselect") {
       this.setState({ screenMode: "active" });
-      this.setState({ timeRemaining: 4 });
+      this.setState({ timeRemaining: 40 });
       console.log("selected test match...");
     } else {
       this.setState({ screenMode: "preselect" });
@@ -53,9 +56,7 @@ class MatchScreen extends React.Component {
   };
 
   startTimer = () => {
-
     switch (this.state.screenMode) {
-
       case "active":
         this.setState({ screenMode: "inprogress" });
         this.setState({ centralButton: "Pause" });
@@ -72,11 +73,10 @@ class MatchScreen extends React.Component {
         break;
 
       case "matchended":
-        this.setState({screenMode: "preselect"})
-        this.setState({centralButton: 'Start'})
-        this.setState({timeRemaining: 111})
+        this.setState({ screenMode: "preselect" });
+        this.setState({ centralButton: "Start" });
+        this.setState({ timeRemaining: 111 });
     }
-
 
     // Start the timer - will need to change parent timeRemaining state
     // or let tick do that, and instead just change parent
@@ -87,14 +87,27 @@ class MatchScreen extends React.Component {
     if (this.state.timeRemaining < 1) {
       console.log("Match is over!");
       this.setState({ screenMode: "matchended" });
-      this.setState({centralButton: 'Reset'})
+      this.setState({ centralButton: "Reset" });
     }
   };
 
   tick = () => {
     console.log("tick invoked");
     if (this.state.screenMode == "inprogress") {
-      console.log("tick thinks we are in progress");
+      console.log("match in progress");
+      
+
+      switch(this.state.scoringMode) {
+
+        case 'left side':
+          this.setState({leftSideScore : this.state.leftSideScore + 1})
+          break;
+        case 'right side':
+          this.setState({rightSideScore : this.state.rightSideScore + 1})
+          break;
+
+      }
+
       this.setState({
         timeRemaining: this.state.timeRemaining - 1,
 
@@ -110,9 +123,21 @@ class MatchScreen extends React.Component {
     this.setState({ leftMountScore: this.state.leftMountScore + 1 });
     console.log("scoring left mount");
   };
+
   scoreLeftSide = () => {
-    this.setState({ leftSideScore: this.state.leftSideScore + 1 });
-    console.log("scoring left side");
+    if (this.state.scoringMode == "waiting") {
+      this.setState({ scoringMode: "left side" });
+    } else if (this.state.scoringMode == "left side") {
+      this.setState({ scoringMode: "waiting" });
+    }
+  };
+
+  scoreRightSide = () => {
+    if (this.state.scoringMode == "waiting") {
+      this.setState({ scoringMode: "right side" });
+    } else if (this.state.scoringMode == "right side") {
+      this.setState({ scoringMode: "waiting" });
+    }
   };
 
   scoreLeftBack = () => {
@@ -125,6 +150,8 @@ class MatchScreen extends React.Component {
       <div class="matchscreen">
         <Scores
           title={"Left Scores"}
+          side='left'
+          buttonColor="blue"
           screenMode={this.state.screenMode}
           mountScore={this.state.leftMountScore}
           backScore={this.state.leftBackScore}
@@ -133,6 +160,7 @@ class MatchScreen extends React.Component {
           scoreBack={this.scoreLeftBack}
           scoreSide={this.scoreLeftSide}
           totalScore={this.state.leftTotalScore}
+          scoringMode={this.state.scoringMode}
         />
 
         <MainTimerArea
@@ -150,14 +178,17 @@ class MatchScreen extends React.Component {
 
         <Scores
           title={"Right Scores"}
+          side='right'
+          buttonColor="red"
           screenMode={this.state.screenMode}
           mountScore={this.state.leftMountScore}
           backScore={this.state.leftBackScore}
-          sideScore={this.state.leftSideScore}
+          sideScore={this.state.rightSideScore}
           scoreMount={this.scoreLeftMount}
           scoreBack={this.scoreLeftBack}
-          scoreSide={this.scoreLeftSide}
-          totalScore={this.state.leftTotalScore}
+          scoreSide={this.scoreRightSide}
+          totalScore={this.state.rightTotalScore}
+          scoringMode={this.state.scoringMode}
         />
       </div>
     );
@@ -168,7 +199,7 @@ class MainTimerArea extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      screenMode: this.props.screenMode,
+      screenMode: this.props.screenMode
 
       //timeRemaining: this.props.matchLength
     };
@@ -210,7 +241,6 @@ class MainTimerArea extends Component {
     const togglePreselect = this.props.togglePreselect;
 
     const startTestMatch = this.props.startTestMatch;
-
 
     console.log(screenMode);
 
@@ -283,30 +313,79 @@ class Scores extends Component {
     // destructure the props
     const {
       title,
+      buttonColor,
       sideScore,
       scoreSide,
       mountScore,
       scoreMount,
       backScore,
       scoreBack,
-      totalScore
+      totalScore,
+      scoringMode,
+      side
     } = this.props;
 
+    let buttonStateSide = "ui basic button";
+    let buttonStateMount = "ui basic button";
+    let buttonStateBack = "ui basic button";
+
+   
+
+    // set the button states
+
+    if (scoringMode == `${side} side`) {
+      buttonStateSide = "ui active button";
+      buttonStateMount = "ui basic button";
+      buttonStateBack = "ui basic button";
+    } else if (scoringMode == `${side} mount`) {
+      buttonStateSide = "ui basic button";
+      buttonStateMount = "ui active button";
+      buttonStateBack = "ui basic button";
+    } else if (scoringMode == `${side} back`) {
+      buttonStateSide = "ui basic button";
+      buttonStateMount = "ui basic button";
+      buttonStateBack = "ui active button";
+    } else if (scoringMode == 'waiting') {
+      buttonStateSide = "ui basic button";
+      buttonStateMount = "ui basic button";
+      buttonStateBack = "ui basic button";
+    }
+
+
+
+
+ 
     return (
       <div class="control">
         <div>{title}</div>
 
         <div>{sideScore}</div>
-        <button onClick={scoreSide}>Score Side</button>
+        <Button
+          content="Score Side"
+          onClick={scoreSide}
+          color={buttonColor}
+          className={buttonStateSide}
+        />
 
         <div>{mountScore}</div>
-        <button onClick={scoreMount}>Score Mount</button>
+        <Button
+          content="Score Mount"
+          onClick={scoreMount}
+          color={buttonColor}
+          className={buttonStateMount}
+        />
 
         <div>{backScore}</div>
-        <button onClick={scoreBack}>Score Back</button>
+        <Button
+          content="Score Back"
+          onClick={scoreMount}
+          color={buttonColor}
+          className={buttonStateBack}
+        />
 
         <div>TOTAL</div>
         <div>{totalScore}</div>
+
       </div> // end control
     );
   }
