@@ -11,6 +11,8 @@ function App() {
   );
 }
 
+export default App;
+
 function ScreenHeader() {
   return (
     <div>
@@ -23,8 +25,6 @@ function ScreenHeader() {
     </div>
   );
 }
-
-export default App;
 
 class MatchScreen extends React.Component {
   constructor(props) {
@@ -48,10 +48,7 @@ class MatchScreen extends React.Component {
     };
   }
 
-  //states = mode :preselect/ready
-
-  //timeRemaning
-  //scores for left and right
+  // togglePreselect - possible use in later version
 
   togglePreselect = () => {
     if (this.state.screenMode == "preselect") {
@@ -65,7 +62,6 @@ class MatchScreen extends React.Component {
     if (this.state.screenMode == "preselect") {
       this.setState({ screenMode: "active" });
       this.setState({ timeRemaining: matchTime });
-      console.log("selected test match...");
     } else {
       this.setState({ screenMode: "preselect" });
     }
@@ -106,17 +102,16 @@ class MatchScreen extends React.Component {
           matchResult: "DRAW"
         });
     }
-
-    // Start the timer - will need to change parent timeRemaining state
-    // or let tick do that, and instead just change parent
-    // timerMode
   };
 
   endMatch = () => {
     if (this.state.timeRemaining < 1) {
       console.log("Match is over!");
-      this.setState({ screenMode: "matchended" });
-      this.setState({ centralButton: "Reset", centralButtonIcon: "refresh" });
+      this.setState({
+        screenMode: "matchended",
+        centralButton: "Reset",
+        centralButtonIcon: "refresh"
+      });
 
       if (this.state.rightTotalScore > this.state.leftTotalScore) {
         this.setState({ matchResult: "RED WINS" });
@@ -127,9 +122,7 @@ class MatchScreen extends React.Component {
   };
 
   tick = () => {
-    console.log("tick invoked");
     if (this.state.screenMode == "inprogress") {
-      console.log("match in progress");
 
       // count the scores
       switch (this.state.scoringMode) {
@@ -152,7 +145,7 @@ class MatchScreen extends React.Component {
           this.setState({ rightBackScore: this.state.rightBackScore + 1 });
           break;
       }
-      // add the scores to display total
+      // add up the scores to display total score
       this.setState({
         timeRemaining: this.state.timeRemaining - 1,
 
@@ -283,19 +276,8 @@ class MainTimerArea extends Component {
     super(props);
     this.state = {
       screenMode: this.props.screenMode
-
-      //timeRemaining: this.props.matchLength
     };
   }
-  // State = Mode: matchSelect/MatchPlay as props from Matchscren state
-
-  // STate = Timeremaining: get from Matchcreen parent
-
-  // Method: Change time remaining OR ready/match finished on matchscreen parent
-  //( it needs to do it on parent as scores need to know whether to keep goin
-  // and they can only receive that from mutual parent)
-
-  // Preselect screen method for changing parent state
 
   componentDidMount() {
     setInterval(() => this.props.tick(), 1000);
@@ -306,45 +288,32 @@ class MainTimerArea extends Component {
     clearInterval(this.timerID);
   }
 
-  goToReadyScreen = timeToSet => {
-    // Change matchscreen.stte to active and change timeRemaning based
-    //on input
-  };
-
-  pauseTimer = () => {
-    console.log("timer paused");
-    // Pause timer
-  };
-
   render() {
-    let screenMode = this.props.screenMode;
+    // destructure props
 
-    let timeRemaining = this.props.timeRemaining;
-
-    const togglePreselect = this.props.togglePreselect;
-
-    const startTestMatch = this.props.startTestMatch;
-
-    console.log(screenMode);
+    let {
+      screenMode,
+      timeRemaining,
+      startTestMatch,
+      centralButton,
+      centralButtonIcon,
+      startTimer,
+      matchResult
+    } = this.props;
 
     if (screenMode == "preselect") {
-      return (
-        <Preselect
-          togglePreselect={togglePreselect}
-          startTestMatch={startTestMatch}
-        />
-      );
+      return <Preselect startTestMatch={startTestMatch} />;
     } else {
       return (
         <div>
           <div class="control">
             <MatchTimer
               timeRemaining={timeRemaining}
-              centralButton={this.props.centralButton}
-              centralButtonIcon={this.props.centralButtonIcon}
-              screenMode={this.props.screenMode}
-              startTimer={this.props.startTimer}
-              matchResult={this.props.matchResult}
+              centralButton={centralButton}
+              centralButtonIcon={centralButtonIcon}
+              screenMode={screenMode}
+              startTimer={startTimer}
+              matchResult={matchResult}
             />
           </div>
         </div>
@@ -457,12 +426,8 @@ class Scores extends Component {
     super(props);
     this.state = {
       screenMode: this.props.screenMode
-      //timeRemaining: this.props.matchLength
     };
   }
-  // State: inactive or active, receive as props from Matchtimer state
-
-  // Method: Change all leftscore states on Matchtimer parent
 
   render() {
     // destructure the props
