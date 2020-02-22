@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/devon-wrestling-react/static/css/main.f1edb4df.chunk.css",
-    "main.js": "/devon-wrestling-react/static/js/main.3435125a.chunk.js",
-    "main.js.map": "/devon-wrestling-react/static/js/main.3435125a.chunk.js.map",
+    "main.css": "/devon-wrestling-react/static/css/main.cb9fb498.chunk.css",
+    "main.js": "/devon-wrestling-react/static/js/main.515eabc9.chunk.js",
+    "main.js.map": "/devon-wrestling-react/static/js/main.515eabc9.chunk.js.map",
     "runtime-main.js": "/devon-wrestling-react/static/js/runtime-main.25430d61.js",
     "runtime-main.js.map": "/devon-wrestling-react/static/js/runtime-main.25430d61.js.map",
     "static/js/2.d3994bf4.chunk.js": "/devon-wrestling-react/static/js/2.d3994bf4.chunk.js",
     "static/js/2.d3994bf4.chunk.js.map": "/devon-wrestling-react/static/js/2.d3994bf4.chunk.js.map",
     "index.html": "/devon-wrestling-react/index.html",
-    "precache-manifest.92832d59ce6a7143855c017b98d1954f.js": "/devon-wrestling-react/precache-manifest.92832d59ce6a7143855c017b98d1954f.js",
+    "precache-manifest.ee6a3c67c100c3cf0293e38f2811df51.js": "/devon-wrestling-react/precache-manifest.ee6a3c67c100c3cf0293e38f2811df51.js",
     "service-worker.js": "/devon-wrestling-react/service-worker.js",
-    "static/css/main.f1edb4df.chunk.css.map": "/devon-wrestling-react/static/css/main.f1edb4df.chunk.css.map",
+    "static/css/main.cb9fb498.chunk.css.map": "/devon-wrestling-react/static/css/main.cb9fb498.chunk.css.map",
     "static/js/2.d3994bf4.chunk.js.LICENSE.txt": "/devon-wrestling-react/static/js/2.d3994bf4.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.25430d61.js",
     "static/js/2.d3994bf4.chunk.js",
-    "static/css/main.f1edb4df.chunk.css",
-    "static/js/main.3435125a.chunk.js"
+    "static/css/main.cb9fb498.chunk.css",
+    "static/js/main.515eabc9.chunk.js"
   ]
 }

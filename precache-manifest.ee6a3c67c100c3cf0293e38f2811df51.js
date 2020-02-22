@@ -1,11 +1,11 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "c15e1959affcc3db3644598ffbdb4c67",
+    "revision": "2e974a56d4982a34e7497a99b536fb05",
     "url": "/devon-wrestling-react/index.html"
   },
   {
-    "revision": "b47014c8175405a124a7",
-    "url": "/devon-wrestling-react/static/css/main.f1edb4df.chunk.css"
+    "revision": "b69c15693a17f45f9c7d",
+    "url": "/devon-wrestling-react/static/css/main.cb9fb498.chunk.css"
   },
   {
     "revision": "02ccd2a65caa645d5c5f",
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/devon-wrestling-react/static/js/2.d3994bf4.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "b47014c8175405a124a7",
-    "url": "/devon-wrestling-react/static/js/main.3435125a.chunk.js"
+    "revision": "b69c15693a17f45f9c7d",
+    "url": "/devon-wrestling-react/static/js/main.515eabc9.chunk.js"
   },
   {
     "revision": "524d57b9cc6a60168c92",
