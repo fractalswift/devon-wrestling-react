@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import { Statistic, Button, Header, Divider } from "semantic-ui-react";
-
 
 function App() {
   return (
@@ -13,20 +11,17 @@ function App() {
   );
 }
 
-
-function ScreenHeader(){
-  return(
-      <div>
+function ScreenHeader() {
+  return (
+    <div>
       <div className="screenheader">
-        <div><h1>Devon Wrestling</h1></div>
-
-        
+        <div>
+          <h1>Devon Wrestling</h1>
         </div>
-        <hr />
-
-        </div>
-
-  )
+      </div>
+      <hr />
+    </div>
+  );
 }
 
 export default App;
@@ -66,7 +61,7 @@ class MatchScreen extends React.Component {
     }
   };
 
-  startTestMatch = (matchTime) => {
+  startTestMatch = matchTime => {
     if (this.state.screenMode == "preselect") {
       this.setState({ screenMode: "active" });
       this.setState({ timeRemaining: matchTime });
@@ -362,59 +357,70 @@ function Preselect(props) {
   return (
     <div>
       <div class="control">
-        <div class='preselect'>
+        <div class="preselect">
+          <Header as="h3" color="black">
+            Select Match Length
+          </Header>
 
-          <Header as='h3' color='black'>Select Match Length</Header>
-
-        <div class='preselectbuttons'>
-        <Button 
-        content='Test match'
-        onClick={()=>{props.startTestMatch(4)}} />
-        <Button 
-        content='5 minute match'
-        onClick={()=>{props.startTestMatch(300)}} />
-        <Button 
-        content='6 minute match'
-        onClick={()=>{props.startTestMatch(360)}}/>
-        <Button 
-        content='7 minute match'
-        onClick={()=>{props.startTestMatch(420)}} />
+          <div class="preselectbuttons">
+            <Button
+              content="3 minute match"
+              onClick={() => {
+                props.startTestMatch(180);
+              }}
+            />
+            <Button
+              content="4 minute match"
+              onClick={() => {
+                props.startTestMatch(240);
+              }}
+            />
+            <Button
+              content="5 minute match"
+              onClick={() => {
+                props.startTestMatch(300);
+              }}
+            />
+            <Button
+              content="6 minute match"
+              onClick={() => {
+                props.startTestMatch(360);
+              }}
+            />
+            <Button
+              content="7 minute match"
+              onClick={() => {
+                props.startTestMatch(420);
+              }}
+            />
+          </div>
         </div>
-    
       </div>
-    </div>
     </div>
   );
 }
 
 function MatchTimer(props) {
-
   // convert the seconds into minutes and seconds
   let minutes = Math.floor(props.timeRemaining / 60);
   let seconds = props.timeRemaining - minutes * 60;
 
   // add a zero before single seconds so timer reads
   // 0:01 in stead of 0:1 etc
-  if(seconds < 10){
-    seconds = `0${seconds}`
+  if (seconds < 10) {
+    seconds = `0${seconds}`;
   }
-  
-
 
   if (props.screenMode == "matchended") {
     return (
+      <div class="maintimer">
+        <Statistic color="black">
+          <Statistic.Value>
+            {minutes}:{seconds}
+          </Statistic.Value>
+          <Statistic.Label>MATCH OVER</Statistic.Label>
+        </Statistic>
 
-      <div class='maintimer'>
-
-      
-
-            <Statistic color='black'>
-              <Statistic.Value>{minutes}:{seconds}</Statistic.Value>
-              <Statistic.Label>MATCH OVER</Statistic.Label>
-            </Statistic>
-
-           
-          
         <Button
           size="massive"
           onClick={props.startTimer}
@@ -422,37 +428,25 @@ function MatchTimer(props) {
           icon={props.centralButtonIcon}
         />
 
-      <Header as="h1">{props.matchResult}</Header>
+        <Header as="h1">{props.matchResult}</Header>
       </div>
-
-
-
-
     );
   } else {
     return (
-      <div class='maintimer'>
+      <div class="maintimer">
+        <Statistic color="black">
+          <Statistic.Value>
+            {minutes}:{seconds}
+          </Statistic.Value>
+          <Statistic.Label>Time Remaining</Statistic.Label>
+        </Statistic>
 
-      
-
-            <Statistic color='black'>
-            <Statistic.Value>{minutes}:{seconds}</Statistic.Value>
-              <Statistic.Label>Time Remaining</Statistic.Label>
-            </Statistic>
-
-
-           
-          
         <Button
           size="massive"
           onClick={props.startTimer}
           content={props.centralButton}
           icon={props.centralButtonIcon}
         />
-
-
-        
-
       </div>
     );
   }
@@ -514,8 +508,10 @@ class Scores extends Component {
     return (
       <div class="control">
         <div class="scoretitle">
-        <Header as='h4' color={buttonColor}>{title}</Header>
-          </div>
+          <Header as="h4" color={buttonColor}>
+            {title}
+          </Header>
+        </div>
 
         <div class="scorebuttons">
           <div class="scorebutton">
