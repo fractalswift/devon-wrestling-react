@@ -1,15 +1,32 @@
 import React, { Component } from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import { Statistic, Button } from "semantic-ui-react";
+import { Statistic, Button, Header, Divider } from "semantic-ui-react";
+
 
 function App() {
   return (
     <div className="App">
-      <div className="screenheader">Header</div>
+      <ScreenHeader />
       <MatchScreen />
     </div>
   );
+}
+
+
+function ScreenHeader(){
+  return(
+      <div>
+      <div className="screenheader">
+        <div><h1>Devon Wrestling</h1></div>
+
+        
+        </div>
+        <hr />
+
+        </div>
+
+  )
 }
 
 export default App;
@@ -32,7 +49,7 @@ class MatchScreen extends React.Component {
       scoringMode: "waiting",
       centralButton: "Start",
       centralButtonIcon: "play",
-      matchResult: 'DRAW'
+      matchResult: "DRAW"
     };
   }
 
@@ -49,10 +66,10 @@ class MatchScreen extends React.Component {
     }
   };
 
-  startTestMatch = () => {
+  startTestMatch = (matchTime) => {
     if (this.state.screenMode == "preselect") {
       this.setState({ screenMode: "active" });
-      this.setState({ timeRemaining: 4 });
+      this.setState({ timeRemaining: matchTime });
       console.log("selected test match...");
     } else {
       this.setState({ screenMode: "preselect" });
@@ -63,21 +80,20 @@ class MatchScreen extends React.Component {
     switch (this.state.screenMode) {
       case "active":
         this.setState({ screenMode: "inprogress" });
-        this.setState({ centralButton: "Pause", centralButtonIcon: 'pause' });
+        this.setState({ centralButton: "Pause", centralButtonIcon: "pause" });
         break;
 
       case "inprogress":
         this.setState({ screenMode: "paused" });
-        this.setState({ centralButton: "Resume", centralButtonIcon: 'play' });
+        this.setState({ centralButton: "Resume", centralButtonIcon: "play" });
         break;
 
       case "paused":
         this.setState({ screenMode: "inprogress" });
-        this.setState({ centralButton: "Pause", centralButtonIcon: 'pause' });
+        this.setState({ centralButton: "Pause", centralButtonIcon: "pause" });
         break;
 
       case "matchended":
-       
         this.setState({
           screenMode: "preselect",
           timeRemaining: 111,
@@ -91,9 +107,9 @@ class MatchScreen extends React.Component {
           rightTotalScore: 0,
           scoringMode: "waiting",
           centralButton: "Start",
-          centralButtonIcon:"play",
-          matchResult: 'DRAW'
-        })
+          centralButtonIcon: "play",
+          matchResult: "DRAW"
+        });
     }
 
     // Start the timer - will need to change parent timeRemaining state
@@ -105,46 +121,43 @@ class MatchScreen extends React.Component {
     if (this.state.timeRemaining < 1) {
       console.log("Match is over!");
       this.setState({ screenMode: "matchended" });
-      this.setState({ centralButton: "Reset", centralButtonIcon: 'refresh' });
+      this.setState({ centralButton: "Reset", centralButtonIcon: "refresh" });
 
-      if(this.state.rightTotalScore > this.state.leftTotalScore){
-
-        this.setState({matchResult: 'RED WINS'})
-      } else if(this.state.rightTotalScore < this.state.leftTotalScore){
-
-        this.setState({matchResult: 'BLUE WINS'})
+      if (this.state.rightTotalScore > this.state.leftTotalScore) {
+        this.setState({ matchResult: "RED WINS" });
+      } else if (this.state.rightTotalScore < this.state.leftTotalScore) {
+        this.setState({ matchResult: "BLUE WINS" });
+      }
     }
-  }};
+  };
 
   tick = () => {
     console.log("tick invoked");
     if (this.state.screenMode == "inprogress") {
       console.log("match in progress");
-      
+
       // count the scores
-      switch(this.state.scoringMode) {
-
-        case 'left side':
-          this.setState({leftSideScore : this.state.leftSideScore + 1})
+      switch (this.state.scoringMode) {
+        case "left side":
+          this.setState({ leftSideScore: this.state.leftSideScore + 1 });
           break;
-        case 'right side':
-          this.setState({rightSideScore : this.state.rightSideScore + 1})
+        case "right side":
+          this.setState({ rightSideScore: this.state.rightSideScore + 1 });
           break;
-        case 'left mount':
-          this.setState({leftMountScore : this.state.leftMountScore + 1})
+        case "left mount":
+          this.setState({ leftMountScore: this.state.leftMountScore + 1 });
           break;
-          case 'right mount':
-          this.setState({rightMountScore : this.state.rightMountScore + 1})
+        case "right mount":
+          this.setState({ rightMountScore: this.state.rightMountScore + 1 });
           break;
-        case 'left back':
-          this.setState({leftBackScore : this.state.leftBackScore + 1})
+        case "left back":
+          this.setState({ leftBackScore: this.state.leftBackScore + 1 });
           break;
-        case 'right back':
-          this.setState({rightBackScore : this.state.rightBackScore + 1})
+        case "right back":
+          this.setState({ rightBackScore: this.state.rightBackScore + 1 });
           break;
-
       }
-        // add the scores to display total
+      // add the scores to display total
       this.setState({
         timeRemaining: this.state.timeRemaining - 1,
 
@@ -157,77 +170,73 @@ class MatchScreen extends React.Component {
           this.state.rightMountScore +
           this.state.rightBackScore +
           this.state.rightSideScore
-
-
       });
     }
   };
 
   scoreLeftSide = () => {
-    if(this.state.screenMode == 'inprogress'){
-    if (this.state.scoringMode == "waiting") {
-      this.setState({ scoringMode: "left side" });
-    } else if (this.state.scoringMode == "left side") {
-      this.setState({ scoringMode: "waiting" });
+    if (this.state.screenMode == "inprogress") {
+      if (this.state.scoringMode == "waiting") {
+        this.setState({ scoringMode: "left side" });
+      } else if (this.state.scoringMode == "left side") {
+        this.setState({ scoringMode: "waiting" });
+      }
     }
-  }};
+  };
   scoreLeftMount = () => {
-    if(this.state.screenMode == 'inprogress'){
-
-    if (this.state.scoringMode == "waiting") {
-      this.setState({ scoringMode: "left mount" });
-    } else if (this.state.scoringMode == "left mount") {
-      this.setState({ scoringMode: "waiting" });
+    if (this.state.screenMode == "inprogress") {
+      if (this.state.scoringMode == "waiting") {
+        this.setState({ scoringMode: "left mount" });
+      } else if (this.state.scoringMode == "left mount") {
+        this.setState({ scoringMode: "waiting" });
+      }
     }
-  }};
+  };
   scoreLeftBack = () => {
-    if(this.state.screenMode == 'inprogress'){
-
-    if (this.state.scoringMode == "waiting") {
-      this.setState({ scoringMode: "left back" });
-    } else if (this.state.scoringMode == "left back") {
-      this.setState({ scoringMode: "waiting" });
+    if (this.state.screenMode == "inprogress") {
+      if (this.state.scoringMode == "waiting") {
+        this.setState({ scoringMode: "left back" });
+      } else if (this.state.scoringMode == "left back") {
+        this.setState({ scoringMode: "waiting" });
+      }
     }
-  }};
-
+  };
 
   scoreRightSide = () => {
-    if(this.state.screenMode == 'inprogress'){
-
-    if (this.state.scoringMode == "waiting") {
-      this.setState({ scoringMode: "right side" });
-    } else if (this.state.scoringMode == "right side") {
-      this.setState({ scoringMode: "waiting" });
+    if (this.state.screenMode == "inprogress") {
+      if (this.state.scoringMode == "waiting") {
+        this.setState({ scoringMode: "right side" });
+      } else if (this.state.scoringMode == "right side") {
+        this.setState({ scoringMode: "waiting" });
+      }
     }
-  }};
+  };
 
   scoreRightMount = () => {
-    if(this.state.screenMode == 'inprogress'){
-
-    if (this.state.scoringMode == "waiting") {
-      this.setState({ scoringMode: "right mount" });
-    } else if (this.state.scoringMode == "right mount") {
-      this.setState({ scoringMode: "waiting" });
+    if (this.state.screenMode == "inprogress") {
+      if (this.state.scoringMode == "waiting") {
+        this.setState({ scoringMode: "right mount" });
+      } else if (this.state.scoringMode == "right mount") {
+        this.setState({ scoringMode: "waiting" });
+      }
     }
-  }};
+  };
   scoreRightBack = () => {
-    if(this.state.screenMode == 'inprogress'){
-
-    if (this.state.scoringMode == "waiting") {
-      this.setState({ scoringMode: "right back" });
-    } else if (this.state.scoringMode == "right back") {
-      this.setState({ scoringMode: "waiting" });
+    if (this.state.screenMode == "inprogress") {
+      if (this.state.scoringMode == "waiting") {
+        this.setState({ scoringMode: "right back" });
+      } else if (this.state.scoringMode == "right back") {
+        this.setState({ scoringMode: "waiting" });
+      }
     }
-  }};
-
- 
+  };
 
   render() {
     return (
       <div class="matchscreen">
         <Scores
           title={"Left Scores"}
-          side='left'
+          side="left"
           buttonColor="blue"
           screenMode={this.state.screenMode}
           mountScore={this.state.leftMountScore}
@@ -257,7 +266,7 @@ class MatchScreen extends React.Component {
 
         <Scores
           title={"Right Scores"}
-          side='right'
+          side="right"
           buttonColor="red"
           screenMode={this.state.screenMode}
           mountScore={this.state.rightMountScore}
@@ -353,56 +362,101 @@ function Preselect(props) {
   return (
     <div>
       <div class="control">
-        <p>Preselect layout</p>
-        <button onClick={props.togglePreselect}>Go to active</button>
-        <br />
+        <div class='preselect'>
 
-        <button onClick={props.startTestMatch}>Test match</button>
-        <br />
-        <button>5 minute match</button>
-        <br />
-        <button>6 minute match</button>
-        <br />
+          <Header as='h3' color='black'>Select Match Length</Header>
+
+        <div class='preselectbuttons'>
+        <Button 
+        content='Test match'
+        onClick={()=>{props.startTestMatch(4)}} />
+        <Button 
+        content='5 minute match'
+        onClick={()=>{props.startTestMatch(300)}} />
+        <Button 
+        content='6 minute match'
+        onClick={()=>{props.startTestMatch(360)}}/>
+        <Button 
+        content='7 minute match'
+        onClick={()=>{props.startTestMatch(420)}} />
+        </div>
+    
       </div>
+    </div>
     </div>
   );
 }
 
 function MatchTimer(props) {
 
-if(props.screenMode == 'matchended') {
+  // convert the seconds into minutes and seconds
+  let minutes = Math.floor(props.timeRemaining / 60);
+  let seconds = props.timeRemaining - minutes * 60;
 
-  return (
-    <div>
-    <div>THE MATCH IS OVER!!</div>
-    <div>{props.timeRemaining}</div>
-    <Button 
-    onClick={props.startTimer}
-    content= {props.centralButton}
-    icon={props.centralButtonIcon}
-    />
-
-    <div>The result is {props.matchResult}</div>
-    
-    </div>
-  )
-
-} else {
+  // add a zero before single seconds so timer reads
+  // 0:01 in stead of 0:1 etc
+  if(seconds < 10){
+    seconds = `0${seconds}`
+  }
+  
 
 
-  return (
-    <div>
-      <div>STATUS: {props.screenMode}</div>
-      <div>{props.timeRemaining}</div>
-      <Button 
-    onClick={props.startTimer}
-    content= {props.centralButton}
-    icon={props.centralButtonIcon}
-    />
-    </div>
-  );
+  if (props.screenMode == "matchended") {
+    return (
+
+      <div class='maintimer'>
+
+      
+
+            <Statistic color='black'>
+              <Statistic.Value>{minutes}:{seconds}</Statistic.Value>
+              <Statistic.Label>MATCH OVER</Statistic.Label>
+            </Statistic>
+
+           
+          
+        <Button
+          size="massive"
+          onClick={props.startTimer}
+          content={props.centralButton}
+          icon={props.centralButtonIcon}
+        />
+
+      <Header as="h1">{props.matchResult}</Header>
+      </div>
+
+
+
+
+    );
+  } else {
+    return (
+      <div class='maintimer'>
+
+      
+
+            <Statistic color='black'>
+            <Statistic.Value>{minutes}:{seconds}</Statistic.Value>
+              <Statistic.Label>Time Remaining</Statistic.Label>
+            </Statistic>
+
+
+           
+          
+        <Button
+          size="massive"
+          onClick={props.startTimer}
+          content={props.centralButton}
+          icon={props.centralButtonIcon}
+        />
+
+
+        
+
+      </div>
+    );
+  }
 }
-} 
 
 class Scores extends Component {
   constructor(props) {
@@ -437,10 +491,7 @@ class Scores extends Component {
     let buttonStateMount = "ui basic button";
     let buttonStateBack = "ui basic button";
 
-   
-
     // set the button states
-
 
     if (scoringMode == `${side} side`) {
       buttonStateSide = "ui active button";
@@ -454,48 +505,82 @@ class Scores extends Component {
       buttonStateSide = "ui basic button";
       buttonStateMount = "ui basic button";
       buttonStateBack = "ui active button";
-    } else if (scoringMode == 'waiting') {
+    } else if (scoringMode == "waiting") {
       buttonStateSide = "ui basic button";
       buttonStateMount = "ui basic button";
       buttonStateBack = "ui basic button";
     }
-    
 
-
-
-
- 
     return (
       <div class="control">
-        <div>{title}</div>
+        <div class="scoretitle">
+        <Header as='h4' color={buttonColor}>{title}</Header>
+          </div>
 
-        <div>{sideScore}</div>
-        <Button
-          content="Score Side"
-          onClick={scoreSide}
-          color={buttonColor}
-          className={buttonStateSide}
-        />
+        <div class="scorebuttons">
+          <div class="scorebutton">
+            {" "}
+            <Button
+              size="massive"
+              content="Side "
+              onClick={scoreSide}
+              color={buttonColor}
+              className={buttonStateSide}
+            />{" "}
+          </div>
 
-        <div>{mountScore}</div>
-        <Button
-          content="Score Mount"
-          onClick={scoreMount}
-          color={buttonColor}
-          className={buttonStateMount}
-        />
+          <div class="scorebutton">
+            {" "}
+            <Button
+              size="massive"
+              content="Mount"
+              onClick={scoreMount}
+              color={buttonColor}
+              className={buttonStateMount}
+            />{" "}
+          </div>
 
-        <div>{backScore}</div>
-        <Button
-          content="Score Back"
-          onClick={scoreBack}
-          color={buttonColor}
-          className={buttonStateBack}
-        />
+          <div class="scorebutton">
+            {" "}
+            <Button
+              size="massive"
+              content="Back "
+              onClick={scoreBack}
+              color={buttonColor}
+              className={buttonStateBack}
+            />{" "}
+          </div>
+        </div>
 
-        <div>TOTAL</div>
-        <div>{totalScore}</div>
+        <div class="scorebox">
+          <div class="positionscore">
+            <Statistic size="tiny" color={buttonColor}>
+              <Statistic.Value>{sideScore}</Statistic.Value>
+              <Statistic.Label>Side</Statistic.Label>
+            </Statistic>
+          </div>
 
+          <div class="positionscore">
+            <Statistic size="tiny" color={buttonColor}>
+              <Statistic.Value>{mountScore}</Statistic.Value>
+              <Statistic.Label>Mount</Statistic.Label>
+            </Statistic>
+          </div>
+
+          <div class="positionscore">
+            <Statistic size="tiny" color={buttonColor}>
+              <Statistic.Value>{backScore}</Statistic.Value>
+              <Statistic.Label>Back</Statistic.Label>
+            </Statistic>
+          </div>
+
+          <div class="totalscore">
+            <Statistic color={buttonColor}>
+              <Statistic.Value>{totalScore}</Statistic.Value>
+              <Statistic.Label>Total</Statistic.Label>
+            </Statistic>
+          </div>
+        </div>
       </div> // end control
     );
   }
