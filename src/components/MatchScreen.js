@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 
 import { Button, Header} from 'semantic-ui-react'
 
-import Scores from './components/Scores'
-import MatchTimer from './components/MatchTimer'
+import Scores from './Scores'
+import MatchTimer from './MatchTimer'
 
 
 class MatchScreen extends React.Component {
