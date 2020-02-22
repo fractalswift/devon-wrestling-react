@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/devon-wrestling-react/precache-manifest.4eb39e9083330f4463c06837767981ae.js"
+  "/devon-wrestling-react/precache-manifest.b09906760cb925d6aabe03f30554aa7c.js"
 );
 
 self.addEventListener('message', (event) => {
