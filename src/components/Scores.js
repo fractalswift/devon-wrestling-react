@@ -52,15 +52,15 @@ class Scores extends Component {
       }
   
       return (
-        <div class="control">
-          <div class="scoretitle">
+        <div className="control">
+          <div className="scoretitle">
             <Header as="h4" color={buttonColor}>
               {title}
             </Header>
           </div>
   
-          <div class="scorebuttons">
-            <div class="scorebutton">
+          <div className="scorebuttons">
+            <div className="scorebutton">
               {" "}
               <Button
                 size="massive"
@@ -71,7 +71,7 @@ class Scores extends Component {
               />{" "}
             </div>
   
-            <div class="scorebutton">
+            <div className="scorebutton">
               {" "}
               <Button
                 size="massive"
@@ -82,7 +82,7 @@ class Scores extends Component {
               />{" "}
             </div>
   
-            <div class="scorebutton">
+            <div className="scorebutton">
               {" "}
               <Button
                 size="massive"
@@ -94,29 +94,29 @@ class Scores extends Component {
             </div>
           </div>
   
-          <div class="scorebox">
-            <div class="positionscore">
+          <div className="scorebox">
+            <div className="positionscore">
               <Statistic size="tiny" color={buttonColor}>
                 <Statistic.Value>{sideScore}</Statistic.Value>
                 <Statistic.Label>Side</Statistic.Label>
               </Statistic>
             </div>
   
-            <div class="positionscore">
+            <div className="positionscore">
               <Statistic size="tiny" color={buttonColor}>
                 <Statistic.Value>{mountScore}</Statistic.Value>
                 <Statistic.Label>Mount</Statistic.Label>
               </Statistic>
             </div>
   
-            <div class="positionscore">
+            <div className="positionscore">
               <Statistic size="tiny" color={buttonColor}>
                 <Statistic.Value>{backScore}</Statistic.Value>
                 <Statistic.Label>Back</Statistic.Label>
               </Statistic>
             </div>
   
-            <div class="totalscore">
+            <div className="totalscore">
               <Statistic color={buttonColor}>
                 <Statistic.Value>{totalScore}</Statistic.Value>
                 <Statistic.Label>Total</Statistic.Label>

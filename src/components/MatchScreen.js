@@ -199,7 +199,7 @@ class MatchScreen extends React.Component {
   
     render() {
       return (
-        <div class="matchscreen">
+        <div className="matchscreen">
           <Scores
             title={"Left Scores"}
             side="left"
@@ -284,7 +284,7 @@ class MatchScreen extends React.Component {
       } else {
         return (
           <div>
-            <div class="control">
+            <div className="control">
               <MatchTimer
                 timeRemaining={timeRemaining}
                 centralButton={centralButton}
@@ -303,13 +303,13 @@ class MatchScreen extends React.Component {
   function Preselect(props) {
     return (
       <div>
-        <div class="control">
-          <div class="preselect">
+        <div className="control">
+          <div className="preselect">
             <Header as="h3" color="black">
               Select Match Length
             </Header>
   
-            <div class="preselectbuttons">
+            <div className="preselectbuttons">
               <Button
                 content="3 minute match"
                 onClick={() => {
