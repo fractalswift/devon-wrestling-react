@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import "./App.css";
-import { Statistic, Button, Header, Divider } from "semantic-ui-react";
+import { Statistic, Button, Header } from "semantic-ui-react";
+
+import ScreenHeader from './components/ScreenHeader'
+import Scores from './components/Scores'
+import MatchTimer from './components/MatchTimer'
 
 function App() {
   return (
@@ -13,18 +17,7 @@ function App() {
 
 export default App;
 
-function ScreenHeader() {
-  return (
-    <div>
-      <div className="screenheader">
-        <div>
-          <h1>Devon Wrestling Timer</h1>
-        </div>
-      </div>
-      <hr />
-    </div>
-  );
-}
+
 
 class MatchScreen extends React.Component {
   constructor(props) {
@@ -60,8 +53,7 @@ class MatchScreen extends React.Component {
 
   startTestMatch = matchTime => {
     if (this.state.screenMode == "preselect") {
-      this.setState({ screenMode: "active" });
-      this.setState({ timeRemaining: matchTime });
+      this.setState({ screenMode: "active",  timeRemaining: matchTime  });
     } else {
       this.setState({ screenMode: "preselect" });
     }
@@ -123,7 +115,6 @@ class MatchScreen extends React.Component {
 
   tick = () => {
     if (this.state.screenMode == "inprogress") {
-
       // count the scores
       switch (this.state.scoringMode) {
         case "left side":
@@ -369,180 +360,5 @@ function Preselect(props) {
   );
 }
 
-function MatchTimer(props) {
-  // convert the seconds into minutes and seconds
-  let minutes = Math.floor(props.timeRemaining / 60);
-  let seconds = props.timeRemaining - minutes * 60;
 
-  // add a zero before single seconds so timer reads
-  // 0:01 in stead of 0:1 etc
-  if (seconds < 10) {
-    seconds = `0${seconds}`;
-  }
 
-  if (props.screenMode == "matchended") {
-    return (
-      <div class="maintimer">
-        <Statistic color="black">
-          <Statistic.Value>
-            {minutes}:{seconds}
-          </Statistic.Value>
-          <Statistic.Label>MATCH OVER</Statistic.Label>
-        </Statistic>
-
-        <Button
-          size="massive"
-          onClick={props.startTimer}
-          content={props.centralButton}
-          icon={props.centralButtonIcon}
-        />
-
-        <Header as="h1">{props.matchResult}</Header>
-      </div>
-    );
-  } else {
-    return (
-      <div class="maintimer">
-        <Statistic color="black">
-          <Statistic.Value>
-            {minutes}:{seconds}
-          </Statistic.Value>
-          <Statistic.Label>Time Remaining</Statistic.Label>
-        </Statistic>
-
-        <Button
-          size="massive"
-          onClick={props.startTimer}
-          content={props.centralButton}
-          icon={props.centralButtonIcon}
-        />
-      </div>
-    );
-  }
-}
-
-class Scores extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      screenMode: this.props.screenMode
-    };
-  }
-
-  render() {
-    // destructure the props
-    const {
-      title,
-      buttonColor,
-      sideScore,
-      scoreSide,
-      mountScore,
-      scoreMount,
-      backScore,
-      scoreBack,
-      totalScore,
-      scoringMode,
-      side,
-      screenMode
-    } = this.props;
-
-    let buttonStateSide = "ui basic button";
-    let buttonStateMount = "ui basic button";
-    let buttonStateBack = "ui basic button";
-
-    // set the button states
-
-    if (scoringMode == `${side} side`) {
-      buttonStateSide = "ui active button";
-      buttonStateMount = "ui basic button";
-      buttonStateBack = "ui basic button";
-    } else if (scoringMode == `${side} mount`) {
-      buttonStateSide = "ui basic button";
-      buttonStateMount = "ui active button";
-      buttonStateBack = "ui basic button";
-    } else if (scoringMode == `${side} back`) {
-      buttonStateSide = "ui basic button";
-      buttonStateMount = "ui basic button";
-      buttonStateBack = "ui active button";
-    } else if (scoringMode == "waiting") {
-      buttonStateSide = "ui basic button";
-      buttonStateMount = "ui basic button";
-      buttonStateBack = "ui basic button";
-    }
-
-    return (
-      <div class="control">
-        <div class="scoretitle">
-          <Header as="h4" color={buttonColor}>
-            {title}
-          </Header>
-        </div>
-
-        <div class="scorebuttons">
-          <div class="scorebutton">
-            {" "}
-            <Button
-              size="massive"
-              content="Side "
-              onClick={scoreSide}
-              color={buttonColor}
-              className={buttonStateSide}
-            />{" "}
-          </div>
-
-          <div class="scorebutton">
-            {" "}
-            <Button
-              size="massive"
-              content="Mount"
-              onClick={scoreMount}
-              color={buttonColor}
-              className={buttonStateMount}
-            />{" "}
-          </div>
-
-          <div class="scorebutton">
-            {" "}
-            <Button
-              size="massive"
-              content="Back "
-              onClick={scoreBack}
-              color={buttonColor}
-              className={buttonStateBack}
-            />{" "}
-          </div>
-        </div>
-
-        <div class="scorebox">
-          <div class="positionscore">
-            <Statistic size="tiny" color={buttonColor}>
-              <Statistic.Value>{sideScore}</Statistic.Value>
-              <Statistic.Label>Side</Statistic.Label>
-            </Statistic>
-          </div>
-
-          <div class="positionscore">
-            <Statistic size="tiny" color={buttonColor}>
-              <Statistic.Value>{mountScore}</Statistic.Value>
-              <Statistic.Label>Mount</Statistic.Label>
-            </Statistic>
-          </div>
-
-          <div class="positionscore">
-            <Statistic size="tiny" color={buttonColor}>
-              <Statistic.Value>{backScore}</Statistic.Value>
-              <Statistic.Label>Back</Statistic.Label>
-            </Statistic>
-          </div>
-
-          <div class="totalscore">
-            <Statistic color={buttonColor}>
-              <Statistic.Value>{totalScore}</Statistic.Value>
-              <Statistic.Label>Total</Statistic.Label>
-            </Statistic>
-          </div>
-        </div>
-      </div> // end control
-    );
-  }
-}
