@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 
-import { Button, Header} from 'semantic-ui-react'
 
 import Scores from './Scores'
 import MainTimerArea from './MainTimerArea'
@@ -85,7 +84,6 @@ class MatchScreen extends Component {
   
     endMatch = () => {
       if (this.state.timeRemaining < 1) {
-        console.log("Match is over!");
         this.setState({
           screenMode: "matchended",
           centralButton: "Reset",
