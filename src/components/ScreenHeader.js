@@ -5,7 +5,7 @@ function ScreenHeader() {
       <div>
         <div className="screenheader">
           <div>
-            <h1>Devon Wrestling Timer</h1>
+            <h1>Devon Wrestling Match Timer</h1>
           </div>
         </div>
         <hr />
