@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
 
-import { Button, Header} from 'semantic-ui-react'
 
 import Scores from './Scores'
-import MatchTimer from './MatchTimer'
+import MainTimerArea from './MainTimerArea'
 
 
-class MatchScreen extends React.Component {
+class MatchScreen extends Component {
     constructor(props) {
       super(props);
   
@@ -85,7 +84,6 @@ class MatchScreen extends React.Component {
   
     endMatch = () => {
       if (this.state.timeRemaining < 1) {
-        console.log("Match is over!");
         this.setState({
           screenMode: "matchended",
           centralButton: "Reset",
@@ -249,103 +247,6 @@ class MatchScreen extends React.Component {
     }
   }
   
-  class MainTimerArea extends Component {
-    constructor(props) {
-      super(props);
-      this.state = {
-        screenMode: this.props.screenMode
-      };
-    }
-  
-    componentDidMount() {
-      setInterval(() => this.props.tick(), 1000);
-      setInterval(() => this.props.endMatch(), 1000);
-    }
-  
-    componentWillUnmount() {
-      clearInterval(this.timerID);
-    }
-  
-    render() {
-      // destructure props
-  
-      let {
-        screenMode,
-        timeRemaining,
-        startTestMatch,
-        centralButton,
-        centralButtonIcon,
-        startTimer,
-        matchResult
-      } = this.props;
-  
-      if (screenMode == "preselect") {
-        return <Preselect startTestMatch={startTestMatch} />;
-      } else {
-        return (
-          <div>
-            <div className="control">
-              <MatchTimer
-                timeRemaining={timeRemaining}
-                centralButton={centralButton}
-                centralButtonIcon={centralButtonIcon}
-                screenMode={screenMode}
-                startTimer={startTimer}
-                matchResult={matchResult}
-              />
-            </div>
-          </div>
-        );
-      }
-    }
-  }
-  
-  function Preselect(props) {
-    return (
-      <div>
-        <div className="control">
-          <div className="preselect">
-            <Header as="h3" color="black">
-              Select Match Length
-            </Header>
-  
-            <div className="preselectbuttons">
-              <Button
-                content="3 minute match"
-                onClick={() => {
-                  props.startTestMatch(180);
-                }}
-              />
-              <Button
-                content="4 minute match"
-                onClick={() => {
-                  props.startTestMatch(240);
-                }}
-              />
-              <Button
-                content="5 minute match"
-                onClick={() => {
-                  props.startTestMatch(300);
-                }}
-              />
-              <Button
-                content="6 minute match"
-                onClick={() => {
-                  props.startTestMatch(360);
-                }}
-              />
-              <Button
-                content="7 minute match"
-                onClick={() => {
-                  props.startTestMatch(420);
-                }}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
   
   
 export default MatchScreen;  
